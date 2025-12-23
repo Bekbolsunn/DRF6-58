@@ -1,11 +1,10 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
 from rest_framework.exceptions import ValidationError
-from .models import ConfirmationCode
+from users.models import ConfirmationCode, CustomUser
 
 
 class UserBaseSerializer(serializers.Serializer):
-    username = serializers.CharField(max_length=150)
+    email = serializers.EmailField()
     password = serializers.CharField()
 
 
@@ -14,12 +13,12 @@ class AuthValidateSerializer(UserBaseSerializer):
 
 
 class RegisterValidateSerializer(UserBaseSerializer):
-    def validate_username(self, username):
+    def validate_email(self, email):
         try:
-            User.objects.get(username=username)
+            CustomUser.objects.get(email=email)
         except:
-            return username
-        raise ValidationError('User уже существует!')
+            return email
+        raise ValidationError('CustomUser уже существует!')
 
 
 class ConfirmationSerializer(serializers.Serializer):
@@ -31,8 +30,8 @@ class ConfirmationSerializer(serializers.Serializer):
         code = attrs.get('code')
 
         try:
-            user = User.objects.get(id=user_id)
-        except User.DoesNotExist:
+            user = CustomUser.objects.get(id=user_id)
+        except CustomUser.DoesNotExist:
             raise ValidationError('User не существует!')
 
         try:
