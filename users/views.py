@@ -10,13 +10,17 @@ from shop_api import swagger
 from .serializers import (
     RegisterValidateSerializer,
     AuthValidateSerializer,
-    ConfirmationSerializer
+    ConfirmationSerializer,
+    CustomTokenObtainPairSerializer
 )
 from users.models import ConfirmationCode, CustomUser
 import random
 import string
 
-from users import serializers
+from rest_framework_simplejwt.views import TokenObtainPairView
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
 
 
 class AuthorizationAPIView(CreateAPIView):
