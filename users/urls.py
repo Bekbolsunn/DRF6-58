@@ -5,6 +5,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
     TokenVerifyView,
 )
+from users.google_ouath import GoogleLoginAPIView
 
 
 urlpatterns = [
@@ -15,4 +16,6 @@ urlpatterns = [
     path('jwt/verify/', TokenVerifyView.as_view(), name='token_verify'),
     path('jwt/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('jwt/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
+
+    path('google-login/', GoogleLoginAPIView.as_view()),
 ]
